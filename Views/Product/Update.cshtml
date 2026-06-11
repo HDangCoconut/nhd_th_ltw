@@ -1,0 +1,91 @@
+@model Product
+
+@{
+    ViewData["Title"] = "Edit Product";
+}
+
+<h2 class="mb-4">Edit Product</h2>
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <form asp-action="Update" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Price" class="form-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CategoryId" class="form-label">Category</label>
+                <select asp-for="CategoryId" asp-items="ViewBag.Categories" class="form-select">
+                    <option value="">-- Select category --</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="imageUrl" class="form-label">Product Image</label>
+                <input type="file" id="imageUrl" name="imageUrl" class="form-control" accept="image/*" />
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update</button>
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </form>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="card">
+            <div class="card-header fw-semibold">Product Image Preview</div>
+            <div class="card-body text-center">
+                <img src="@Model.ImageUrl"
+                     alt="@Model.Name"
+                     class="product-edit-image @(string.IsNullOrWhiteSpace(Model.ImageUrl) ? "d-none" : "")"
+                     id="previewImage" />
+                <div class="product-edit-image product-image-placeholder @(string.IsNullOrWhiteSpace(Model.ImageUrl) ? "" : "d-none")"
+                     id="imagePlaceholder">
+                    No image
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        document.getElementById("imageUrl").addEventListener("change", function (event) {
+            const file = event.target.files[0];
+
+            if (!file) {
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (readerEvent) {
+                const previewImage = document.getElementById("previewImage");
+                previewImage.src = readerEvent.target.result;
+                previewImage.classList.remove("d-none");
+                document.getElementById("imagePlaceholder").classList.add("d-none");
+            };
+            reader.readAsDataURL(file);
+        });
+    </script>
+}

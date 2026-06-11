@@ -1,0 +1,39 @@
+@model Product
+
+@{
+    ViewData["Title"] = "Admin - Product Details";
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="btn btn-outline-secondary mb-4">
+        <i class="fa-solid fa-arrow-left me-1"></i> Quay lại quản lý sản phẩm
+    </a>
+
+    <div class="card border-0 shadow-sm rounded-4 product-detail-card">
+        <div class="row g-0">
+            <div class="col-md-5 product-detail-image-wrapper d-flex align-items-center justify-content-center p-4">
+                @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+                {
+                    <img src="@Model.ImageUrl" alt="@Model.Name" class="product-detail-image" />
+                }
+                else
+                {
+                    <div class="product-detail-image product-image-placeholder rounded-3">No image</div>
+                }
+            </div>
+            <div class="col-md-7">
+                <div class="card-body p-4">
+                    <h2 class="fw-bold">@Model.Name</h2>
+                    <p class="badge bg-secondary px-3 py-2">SP@Model.Id.ToString("D4")</p>
+                    <div class="h3 text-danger fw-bold my-3">@Model.Price.ToString("N0")đ</div>
+                    <p class="text-muted">@Model.Description</p>
+                    <p><strong>Danh mục:</strong> @Model.Category?.Name</p>
+                    <div class="d-flex gap-2 mt-4">
+                        <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

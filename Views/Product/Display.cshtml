@@ -1,0 +1,204 @@
+@model Product
+
+@{
+    ViewData["Title"] = Model.Name;
+    var imageUrls = new List<string>();
+
+    if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+    {
+        imageUrls.Add(Model.ImageUrl);
+    }
+
+    if (Model.Images is not null)
+    {
+        imageUrls.AddRange(Model.Images
+            .Where(image => !string.IsNullOrWhiteSpace(image.Url))
+            .Select(image => image.Url)
+            .Where(url => !imageUrls.Contains(url, StringComparer.OrdinalIgnoreCase)));
+    }
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="btn btn-outline-secondary mb-4 shadow-sm py-2 px-3">
+        <i class="fa-solid fa-arrow-left me-1"></i> Quay lại trang chủ
+    </a>
+
+    <div class="row g-5">
+        <div class="col-md-6 mb-4">
+            @if (imageUrls.Any())
+            {
+                <div id="productImageCarousel" class="carousel slide product-gallery shadow-sm rounded-4 border bg-white" data-bs-ride="false">
+                    <div class="carousel-inner">
+                        @for (var index = 0; index < imageUrls.Count; index++)
+                        {
+                            var imageUrl = imageUrls[index];
+                            <div class="carousel-item @(index == 0 ? "active" : "")">
+                                <button type="button"
+                                        class="product-gallery-main-image-button"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#productImageModal"
+                                        data-image-index="@index">
+                                    <img src="@imageUrl" alt="@Model.Name" class="d-block w-100 product-image" />
+                                </button>
+                            </div>
+                        }
+                    </div>
+
+                    @if (imageUrls.Count > 1)
+                    {
+                        <button class="carousel-control-prev" type="button" data-bs-target="#productImageCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#productImageCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                        </button>
+                    }
+                </div>
+
+                @if (imageUrls.Count > 1)
+                {
+                    <div class="d-flex flex-wrap justify-content-center gap-3 mt-3">
+                        @for (var index = 0; index < imageUrls.Count; index++)
+                        {
+                            var imageUrl = imageUrls[index];
+                            <button type="button"
+                                    class="product-gallery-thumb @(index == 0 ? "active" : "")"
+                                    data-bs-target="#productImageCarousel"
+                                    data-bs-slide-to="@index"
+                                    aria-label="Xem ảnh @(index + 1)">
+                                <img src="@imageUrl" alt="@Model.Name" />
+                            </button>
+                        }
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="product-image product-image-placeholder rounded-4 shadow-sm border p-3 bg-white">No image</div>
+            }
+        </div>
+
+        <div class="col-md-6">
+            <h2 class="fw-bold text-dark mb-2">@Model.Name</h2>
+            <p class="badge bg-secondary mb-3 px-3 py-2">Mã sản phẩm: SP@Model.Id.ToString("D4")</p>
+
+            <div class="mb-3 d-flex align-items-center">
+                <div class="text-warning me-2">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-half"></i>
+                </div>
+                <span class="text-muted small">4.9 (120 đánh giá)</span>
+            </div>
+
+            <div class="mb-4 bg-light p-3 rounded-3 d-flex align-items-baseline gap-3">
+                <span class="h3 fw-bold text-danger mb-0">@Model.Price.ToString("N0")đ</span>
+            </div>
+
+            <p class="text-muted mb-4">@Model.Description</p>
+
+            <div class="mb-4">
+                <h6 class="fw-bold text-dark mb-2">Danh mục:</h6>
+                <span class="badge bg-primary-subtle text-primary-emphasis px-3 py-2">@Model.Category?.Name</span>
+            </div>
+
+            <div class="mb-4">
+                <label for="quantity" class="form-label fw-bold text-dark">Số lượng:</label>
+                <input type="number" class="form-control text-center rounded-3 border-secondary" id="quantity" value="1" min="1" style="max-width: 80px; font-weight: 600;">
+            </div>
+
+            <div class="d-flex flex-wrap gap-3 mb-4">
+                <button class="btn btn-danger btn-lg flex-grow-1 py-3 px-4 rounded-3 fw-bold shadow-sm">
+                    <i class="bi bi-cart-plus me-2"></i> Thêm vào giỏ hàng
+                </button>
+                <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-outline-secondary btn-lg py-3 px-4 rounded-3">
+                    <i class="bi bi-pencil-square me-1"></i> Edit
+                </a>
+            </div>
+
+            <div class="mt-4 border-top pt-4">
+                <h5 class="fw-bold text-dark mb-3">Thông tin nổi bật:</h5>
+                <ul class="ps-0 row g-2">
+                    <li class="col-md-6 mb-2 list-unstyled text-muted small">
+                        <i class="bi bi-patch-check-fill text-success me-2"></i>Hàng chính hãng, bảo hành rõ ràng
+                    </li>
+                    <li class="col-md-6 mb-2 list-unstyled text-muted small">
+                        <i class="bi bi-patch-check-fill text-success me-2"></i>Giao hàng nhanh chóng
+                    </li>
+                    <li class="col-md-6 mb-2 list-unstyled text-muted small">
+                        <i class="bi bi-patch-check-fill text-success me-2"></i>Hỗ trợ đổi trả theo chính sách
+                    </li>
+                    <li class="col-md-6 mb-2 list-unstyled text-muted small">
+                        <i class="bi bi-patch-check-fill text-success me-2"></i>Tư vấn kỹ thuật tận tình
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (imageUrls.Any())
+{
+    <div class="modal fade" id="productImageModal" tabindex="-1" aria-labelledby="productImageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content bg-dark">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-white" id="productImageModalLabel">@Model.Name</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div id="productImageModalCarousel" class="carousel slide" data-bs-ride="false">
+                        <div class="carousel-inner">
+                            @for (var index = 0; index < imageUrls.Count; index++)
+                            {
+                                var imageUrl = imageUrls[index];
+                                <div class="carousel-item @(index == 0 ? "active" : "")">
+                                    <img src="@imageUrl" alt="@Model.Name" class="d-block w-100 product-image-modal" />
+                                </div>
+                            }
+                        </div>
+
+                        @if (imageUrls.Count > 1)
+                        {
+                            <button class="carousel-control-prev" type="button" data-bs-target="#productImageModalCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon"></span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#productImageModalCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon"></span>
+                            </button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        document.querySelectorAll(".product-gallery-main-image-button").forEach(function (button) {
+            button.addEventListener("click", function () {
+                const imageIndex = Number(button.dataset.imageIndex);
+                const modalCarouselElement = document.getElementById("productImageModalCarousel");
+                const modalCarousel = bootstrap.Carousel.getOrCreateInstance(modalCarouselElement);
+                modalCarousel.to(imageIndex);
+            });
+        });
+
+        const productImageCarouselElement = document.getElementById("productImageCarousel");
+        if (productImageCarouselElement) {
+            productImageCarouselElement.addEventListener("slide.bs.carousel", function (event) {
+                document.querySelectorAll(".product-gallery-thumb").forEach(function (thumb) {
+                    thumb.classList.remove("active");
+                });
+
+                const activeThumb = document.querySelector(`.product-gallery-thumb[data-bs-slide-to="${event.to}"]`);
+                if (activeThumb) {
+                    activeThumb.classList.add("active");
+                }
+            });
+        }
+    </script>
+}

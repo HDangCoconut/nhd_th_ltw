@@ -1,0 +1,33 @@
+@model Category
+
+@{
+    ViewData["Title"] = "Delete Category";
+}
+
+<h2 class="mb-4">Delete Category</h2>
+
+<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+<div class="alert alert-warning">
+    Are you sure you want to delete <strong>@Model.Name</strong>?
+</div>
+
+@if (Model.Products.Count > 0)
+{
+    <div class="alert alert-danger">
+        This category contains @Model.Products.Count product(s) and cannot be deleted.
+    </div>
+}
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="Id" />
+    @if (Model.Products.Count > 0)
+    {
+        <button type="button" class="btn btn-danger" disabled>Delete</button>
+    }
+    else
+    {
+        <button type="submit" class="btn btn-danger">Delete</button>
+    }
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</form>
