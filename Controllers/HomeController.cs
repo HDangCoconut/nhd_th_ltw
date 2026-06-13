@@ -15,10 +15,15 @@ namespace NguyenHaiDang_W345.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Product");
         }
 
         public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        public IActionResult Cart()
         {
             return View();
         }

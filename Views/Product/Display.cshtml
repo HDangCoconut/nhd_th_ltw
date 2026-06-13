@@ -16,6 +16,13 @@
             .Select(image => image.Url)
             .Where(url => !imageUrls.Contains(url, StringComparer.OrdinalIgnoreCase)));
     }
+
+    if (!imageUrls.Any())
+    {
+        imageUrls.Add("/images/burger.png");
+    }
+
+    var oldPrice = Model.Price * 1.25m;
 }
 
 <div class="container py-4">
@@ -80,28 +87,38 @@
 
         <div class="col-md-6">
             <h2 class="fw-bold text-dark mb-2">@Model.Name</h2>
-            <p class="badge bg-secondary mb-3 px-3 py-2">Mã sản phẩm: SP@Model.Id.ToString("D4")</p>
+            <p class="badge bg-secondary mb-3 px-3 py-2">Mã sản phẩm: FOOD-@Model.Id.ToString("D2")</p>
 
             <div class="mb-3 d-flex align-items-center">
                 <div class="text-warning me-2">
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-half"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
                 </div>
                 <span class="text-muted small">4.9 (120 đánh giá)</span>
             </div>
 
             <div class="mb-4 bg-light p-3 rounded-3 d-flex align-items-baseline gap-3">
                 <span class="h3 fw-bold text-danger mb-0">@Model.Price.ToString("N0")đ</span>
+                <span class="text-muted text-decoration-line-through small">@oldPrice.ToString("N0")đ</span>
             </div>
 
             <p class="text-muted mb-4">@Model.Description</p>
 
             <div class="mb-4">
-                <h6 class="fw-bold text-dark mb-2">Danh mục:</h6>
-                <span class="badge bg-primary-subtle text-primary-emphasis px-3 py-2">@Model.Category?.Name</span>
+                <h6 class="fw-bold text-dark mb-2">Kích cỡ:</h6>
+                <div class="btn-group flex-wrap" role="group">
+                    <input type="radio" class="btn-check" name="size" id="sizeS" checked>
+                    <label class="btn btn-outline-secondary px-4 py-2" for="sizeS">Nhỏ (S)</label>
+
+                    <input type="radio" class="btn-check" name="size" id="sizeM">
+                    <label class="btn btn-outline-secondary px-4 py-2" for="sizeM">Vừa (M) (+10.000đ)</label>
+
+                    <input type="radio" class="btn-check" name="size" id="sizeL">
+                    <label class="btn btn-outline-secondary px-4 py-2" for="sizeL">Lớn (L) (+20.000đ)</label>
+                </div>
             </div>
 
             <div class="mb-4">
@@ -110,28 +127,28 @@
             </div>
 
             <div class="d-flex flex-wrap gap-3 mb-4">
-                <button class="btn btn-danger btn-lg flex-grow-1 py-3 px-4 rounded-3 fw-bold shadow-sm">
-                    <i class="bi bi-cart-plus me-2"></i> Thêm vào giỏ hàng
-                </button>
+                <a asp-controller="Home" asp-action="Cart" class="btn btn-accent btn-lg flex-grow-1 py-3 px-4 rounded-3 fw-bold shadow-sm">
+                    <i class="fa-solid fa-cart-plus me-2"></i> Thêm vào giỏ hàng
+                </a>
                 <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-outline-secondary btn-lg py-3 px-4 rounded-3">
-                    <i class="bi bi-pencil-square me-1"></i> Edit
+                    <i class="fa-regular fa-heart me-1"></i> Yêu thích
                 </a>
             </div>
 
             <div class="mt-4 border-top pt-4">
-                <h5 class="fw-bold text-dark mb-3">Thông tin nổi bật:</h5>
+                <h5 class="fw-bold text-dark mb-3">Đặc trưng món ăn:</h5>
                 <ul class="ps-0 row g-2">
                     <li class="col-md-6 mb-2 list-unstyled text-muted small">
-                        <i class="bi bi-patch-check-fill text-success me-2"></i>Hàng chính hãng, bảo hành rõ ràng
+                        <i class="fa-solid fa-circle-check text-success me-2"></i>Nguyên liệu tươi mới mỗi ngày
                     </li>
                     <li class="col-md-6 mb-2 list-unstyled text-muted small">
-                        <i class="bi bi-patch-check-fill text-success me-2"></i>Giao hàng nhanh chóng
+                        <i class="fa-solid fa-circle-check text-success me-2"></i>Chế biến nóng giòn khi đặt món
                     </li>
                     <li class="col-md-6 mb-2 list-unstyled text-muted small">
-                        <i class="bi bi-patch-check-fill text-success me-2"></i>Hỗ trợ đổi trả theo chính sách
+                        <i class="fa-solid fa-circle-check text-success me-2"></i>Sốt đặc chế đậm vị Yummy Bite
                     </li>
                     <li class="col-md-6 mb-2 list-unstyled text-muted small">
-                        <i class="bi bi-patch-check-fill text-success me-2"></i>Tư vấn kỹ thuật tận tình
+                        <i class="fa-solid fa-circle-check text-success me-2"></i>Đóng gói gọn gàng, giữ nhiệt tốt
                     </li>
                 </ul>
             </div>

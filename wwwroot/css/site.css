@@ -9,9 +9,13 @@ html {
 }
 
 :root {
-  --primary-color: #0f172a;
-  --accent-color: #ef4444;
-  --bg-color: #f8fafc;
+  --primary-color: #251c16;
+  --accent-color: #ff4722;
+  --secondary-color: #ffb703;
+  --bg-color: #faf8f5;
+  --text-dark: #3d2f26;
+  --text-muted: #8c7a6e;
+  --white: #ffffff;
 }
 
 .btn:focus,
@@ -31,26 +35,59 @@ body {
   min-height: 100%;
   background-color: var(--bg-color);
   font-family: "Plus Jakarta Sans", sans-serif;
-  color: #334155;
+  color: var(--text-dark);
+  -webkit-font-smoothing: antialiased;
 }
 
 .navbar {
-  background: linear-gradient(135deg, #1e293b, var(--primary-color));
+  background: rgba(37, 28, 22, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 2px solid var(--accent-color);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand span {
+  font-size: 1.3rem;
+  letter-spacing: 0.5px;
+}
+
+.navbar .form-control {
+  min-width: 220px;
+  border: 0;
+}
+
+.carousel {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(37, 28, 22, 0.08);
 }
 
 .carousel-item img {
-  height: 380px;
+  height: 400px;
   object-fit: cover;
 }
 
-.category-menu .list-group-item {
-  transition: all 0.2s ease;
-  font-weight: 600;
+.text-accent {
+  color: var(--accent-color) !important;
 }
 
-.category-menu .list-group-item:hover {
-  background-color: #f1f5f9;
+.bg-accent {
+  background-color: var(--accent-color) !important;
+}
+
+.category-menu .list-group-item {
+  background-color: var(--white);
+  border-bottom: 1px solid rgba(140, 122, 110, 0.08) !important;
+  color: var(--text-dark);
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.category-menu .list-group-item:hover,
+.category-menu .list-group-item.active {
+  background-color: rgba(255, 71, 34, 0.05);
   color: var(--accent-color);
+  padding-left: 1.5rem;
 }
 
 .product-link {
@@ -59,18 +96,32 @@ body {
 }
 
 .product-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: var(--white);
+  border: 1px solid rgba(140, 122, 110, 0.08) !important;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .product-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 15px 35px rgba(255, 71, 34, 0.08) !important;
+  border-color: rgba(255, 71, 34, 0.2) !important;
+}
+
+.product-img-wrapper {
+  background-color: #fdfcfb;
+  overflow: hidden;
+  position: relative;
 }
 
 .product-img {
   width: 100%;
-  height: 200px;
+  height: 220px;
   object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.product-card:hover .product-img {
+  transform: scale(1.08);
 }
 
 .product-desc {
@@ -82,7 +133,7 @@ body {
 }
 
 .product-price {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
 }
 
 .product-image-placeholder {
@@ -95,25 +146,63 @@ body {
 }
 
 .thumbnail {
-  width: 70px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
   object-fit: contain;
   cursor: pointer;
-  border: 2px solid #e2e8f0;
+  border: 2px solid rgba(140, 122, 110, 0.1);
+  border-radius: 12px;
   transition: all 0.2s ease;
 }
 
 .thumbnail:hover,
 .thumbnail.active {
   border-color: var(--accent-color);
-  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(255, 71, 34, 0.15);
+  transform: scale(1.08);
 }
 
 .product-image {
   width: 100%;
   min-height: 360px;
-  max-height: 400px;
-  object-fit: contain;
+  max-height: 420px;
+  object-fit: cover;
+}
+
+.btn-accent {
+  background-color: var(--accent-color);
+  border: none;
+  color: var(--white);
+  transition: all 0.3s ease;
+}
+
+.btn-accent:hover {
+  background-color: #e03512;
+  box-shadow: 0 8px 20px rgba(255, 71, 34, 0.25);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+.btn-outline-accent {
+  background: transparent;
+  border: 2px solid var(--accent-color);
+  color: var(--accent-color);
+  transition: all 0.3s ease;
+}
+
+.btn-outline-accent:hover {
+  background-color: var(--accent-color);
+  color: var(--white);
+}
+
+.cart-item {
+  border-radius: 12px;
+  padding: 10px;
+  transition: all 0.3s ease;
+}
+
+.cart-item:hover {
+  background-color: rgba(255, 71, 34, 0.02);
 }
 
 .product-gallery {
@@ -197,4 +286,24 @@ body {
   min-height: 300px;
   max-height: 420px;
   object-fit: contain;
+}
+
+@media (max-width: 991.98px) {
+  .navbar .form-control {
+    min-width: 0;
+  }
+
+  .carousel-item img {
+    height: 300px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .carousel-item img {
+    height: 220px;
+  }
+
+  .product-img {
+    height: 190px;
+  }
 }

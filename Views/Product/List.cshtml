@@ -1,17 +1,17 @@
 @model IEnumerable<Product>
 
 @{
-    ViewData["Title"] = "List Product";
+    ViewData["Title"] = "Quản lý món ăn";
 }
 
 <div class="container-fluid px-lg-5 mt-4">
     <div class="d-flex align-items-center justify-content-between mb-4">
         <div>
-            <h2 class="mb-1">List Product</h2>
-            <p class="text-muted mb-0">Danh sách sản phẩm.</p>
+            <h2 class="mb-1 fw-bold text-dark">Quản lý món ăn</h2>
+            <p class="text-muted mb-0">Danh sách món ăn đang hiển thị trên thực đơn.</p>
         </div>
-        <a asp-action="Add" class="btn btn-danger rounded-pill px-4">
-            <i class="fa-solid fa-plus me-1"></i> Thêm sản phẩm
+        <a asp-action="Add" class="btn btn-accent rounded-pill px-4">
+            <i class="fa-solid fa-plus me-1"></i> Thêm món mới
         </a>
     </div>
 
@@ -22,7 +22,7 @@
                     <thead>
                         <tr>
                             <th>Ảnh</th>
-                            <th>Tên sản phẩm</th>
+                            <th>Tên món</th>
                             <th>Giá</th>
                             <th>Danh mục</th>
                             <th>Mô tả</th>
@@ -48,9 +48,9 @@
                                 <td>@product.Category?.Name</td>
                                 <td class="product-description">@product.Description</td>
                                 <td class="text-nowrap">
-                                    <a asp-action="Display" asp-route-id="@product.Id" class="btn btn-sm btn-outline-info">View</a>
-                                    <a asp-action="Update" asp-route-id="@product.Id" class="btn btn-sm btn-outline-primary">Edit</a>
-                                    <a asp-action="Delete" asp-route-id="@product.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                                    <a asp-action="Display" asp-route-id="@product.Id" class="btn btn-sm btn-outline-accent">Xem</a>
+                                    <a asp-action="Update" asp-route-id="@product.Id" class="btn btn-sm btn-outline-primary">Sửa</a>
+                                    <a asp-action="Delete" asp-route-id="@product.Id" class="btn btn-sm btn-outline-danger">Xóa</a>
                                 </td>
                             </tr>
                         }

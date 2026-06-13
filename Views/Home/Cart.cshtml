@@ -1,0 +1,122 @@
+@{
+    ViewData["Title"] = "Giỏ hàng";
+}
+
+<div class="container py-5">
+    <h2 class="mb-5 fw-bold text-dark">
+        <i class="fa-solid fa-cart-shopping text-accent me-2"></i>Giỏ hàng của bạn
+    </h2>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm mb-4 rounded-4 overflow-hidden">
+                <div class="card-body p-4">
+                    <div class="row cart-item mb-4 g-3 align-items-center">
+                        <div class="col-md-2 col-4 text-center">
+                            <img src="~/images/burger.png" alt="Burger Bò Phô Mai Hoàng Kim" class="img-fluid rounded border p-1 bg-white shadow-sm" style="max-width: 90px; height: 90px; object-fit: cover;">
+                        </div>
+
+                        <div class="col-md-5 col-8">
+                            <h5 class="fw-bold text-dark mb-1">Burger Bò Phô Mai Hoàng Kim</h5>
+                            <p class="text-muted small mb-0"><i class="fa-solid fa-tags me-1"></i>Danh mục: Burger & Bánh mì</p>
+                        </div>
+
+                        <div class="col-md-3 col-6 mt-3 mt-md-0">
+                            <div class="input-group" style="max-width: 120px;">
+                                <button class="btn btn-outline-secondary btn-sm px-3" type="button">-</button>
+                                <input type="text" class="form-control form-control-sm text-center border-secondary fw-bold bg-white" value="1" readonly>
+                                <button class="btn btn-outline-secondary btn-sm px-3" type="button">+</button>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 col-6 text-end mt-3 mt-md-0">
+                            <p class="fw-bold text-danger mb-2">89.000đ</p>
+                            <button class="btn btn-sm btn-outline-danger rounded-pill px-3">
+                                <i class="fa-solid fa-trash me-1"></i> Xóa
+                            </button>
+                        </div>
+                    </div>
+
+                    <hr class="my-4 text-muted">
+
+                    <div class="row cart-item g-3 align-items-center">
+                        <div class="col-md-2 col-4 text-center">
+                            <img src="~/images/fried_chicken.png" alt="Gà Rán Giòn Cay Sốt Hàn" class="img-fluid rounded border p-1 bg-white shadow-sm" style="max-width: 90px; height: 90px; object-fit: cover;">
+                        </div>
+
+                        <div class="col-md-5 col-8">
+                            <h5 class="fw-bold text-dark mb-1">Gà Rán Giòn Cay Sốt Hàn</h5>
+                            <p class="text-muted small mb-0"><i class="fa-solid fa-tags me-1"></i>Danh mục: Gà Rán & Gà Nướng</p>
+                        </div>
+
+                        <div class="col-md-3 col-6 mt-3 mt-md-0">
+                            <div class="input-group" style="max-width: 120px;">
+                                <button class="btn btn-outline-secondary btn-sm px-3" type="button">-</button>
+                                <input type="text" class="form-control form-control-sm text-center border-secondary fw-bold bg-white" value="2" readonly>
+                                <button class="btn btn-outline-secondary btn-sm px-3" type="button">+</button>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 col-6 text-end mt-3 mt-md-0">
+                            <p class="fw-bold text-danger mb-2">158.000đ</p>
+                            <button class="btn btn-sm btn-outline-danger rounded-pill px-3">
+                                <i class="fa-solid fa-trash me-1"></i> Xóa
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <a asp-controller="Product" asp-action="Index" class="btn btn-outline-secondary py-2 px-4 shadow-sm rounded-pill fw-semibold">
+                <i class="fa-solid fa-arrow-left me-2"></i>Tiếp tục mua sắm
+            </a>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm mb-4 rounded-4 overflow-hidden">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold text-dark mb-4 border-bottom pb-3">Tóm tắt đơn hàng</h5>
+
+                    <div class="d-flex justify-content-between mb-3 text-muted">
+                        <span>Tạm tính</span>
+                        <span class="fw-semibold text-dark">247.000đ</span>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-3 text-muted">
+                        <span>Phí vận chuyển</span>
+                        <span class="badge bg-success-subtle text-success fw-semibold px-2 py-1">Miễn phí</span>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-3 text-muted">
+                        <span>Giảm giá</span>
+                        <span class="fw-semibold text-dark">0đ</span>
+                    </div>
+
+                    <hr class="my-3">
+
+                    <div class="d-flex justify-content-between mb-4">
+                        <strong class="text-dark">Tổng cộng</strong>
+                        <strong class="text-danger fs-4">247.000đ</strong>
+                    </div>
+
+                    <button class="btn btn-accent w-100 btn-lg rounded-3 py-3 shadow-sm fw-semibold">
+                        <i class="fa-solid fa-credit-card me-2"></i>Thanh toán ngay
+                    </button>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                <div class="card-body p-4">
+                    <h6 class="fw-bold text-dark mb-3">
+                        <i class="fa-solid fa-ticket text-accent me-2"></i>Mã giảm giá
+                    </h6>
+
+                    <div class="input-group">
+                        <input type="text" class="form-control border-secondary" placeholder="Nhập mã giảm giá...">
+                        <button class="btn btn-outline-secondary px-3" type="button">Áp dụng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
