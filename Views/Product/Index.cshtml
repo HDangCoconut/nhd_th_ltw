@@ -116,7 +116,12 @@
                         </a>
                         <div class="card-footer bg-white border-0 pt-0 pb-3 px-3">
                             <div class="d-grid gap-2">
-                                <a asp-action="Display" asp-route-id="@product.Id" class="btn btn-accent rounded-pill py-2 fw-semibold">
+                                @* Bài 5 - 5.2.1: Nút thêm sản phẩm vào giỏ hàng bằng ShoppingCartController. *@
+                                <a asp-controller="ShoppingCart"
+                                   asp-action="AddToCart"
+                                   asp-route-productId="@product.Id"
+                                   asp-route-quantity="1"
+                                   class="btn btn-accent rounded-pill py-2 fw-semibold">
                                     <i class="fa-solid fa-cart-shopping me-1"></i> Mua hàng
                                 </a>
                                 <a asp-action="Display" asp-route-id="@product.Id" class="btn btn-outline-secondary rounded-pill py-2 fw-semibold">Xem chi tiết</a>

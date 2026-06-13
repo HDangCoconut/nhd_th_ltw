@@ -8,6 +8,15 @@ using NguyenHaiDang_W345.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+// Bài 5 - 5.2.1: Cấu hình Session để lưu giỏ hàng tạm thời.
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -35,6 +44,8 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 app.UseRouting();
+// Bài 5 - 5.2.1: Bật Session trước khi xử lý Authentication/Authorization.
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();

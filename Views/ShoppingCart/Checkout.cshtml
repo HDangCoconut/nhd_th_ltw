@@ -1,0 +1,49 @@
+@model Order
+
+@{
+    ViewData["Title"] = "Thanh toán";
+}
+
+@* Bài 5 - 5.2.2: Form nhập thông tin giao hàng để tạo đơn hàng. *@
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <h2 class="fw-bold text-dark mb-4">
+                        <i class="fa-solid fa-credit-card text-accent me-2"></i>Thanh toán
+                    </h2>
+
+                    <form asp-action="Checkout" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="ShippingAddress" class="form-label fw-semibold">Địa chỉ giao hàng</label>
+                            <input asp-for="ShippingAddress" class="form-control" placeholder="Nhập địa chỉ nhận hàng" />
+                            <span asp-validation-for="ShippingAddress" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Notes" class="form-label fw-semibold">Ghi chú</label>
+                            <textarea asp-for="Notes" class="form-control" rows="4" placeholder="Ghi chú thêm cho đơn hàng nếu có"></textarea>
+                            <span asp-validation-for="Notes" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-2">
+                            <button type="submit" class="btn btn-accent rounded-pill px-4">
+                                Đặt hàng
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">
+                                Quay lại giỏ hàng
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

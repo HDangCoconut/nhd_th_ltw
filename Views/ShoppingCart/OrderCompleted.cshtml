@@ -1,0 +1,29 @@
+@model int
+
+@{
+    ViewData["Title"] = "Đặt hàng thành công";
+}
+
+@* Bài 5 - 5.2.2: Hiển thị xác nhận sau khi đặt hàng thành công. *@
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm rounded-4 text-center">
+                <div class="card-body p-4 p-md-5">
+                    <div class="display-4 text-success mb-3">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+
+                    <h2 class="fw-bold text-dark mb-3">Đặt hàng thành công</h2>
+                    <p class="text-muted mb-4">
+                        Đơn hàng có mã <strong>#@Model</strong> đã được ghi nhận.
+                    </p>
+
+                    <a asp-controller="Product" asp-action="Index" class="btn btn-accent rounded-pill px-4">
+                        Tiếp tục mua sắm
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

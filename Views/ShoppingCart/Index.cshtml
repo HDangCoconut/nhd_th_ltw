@@ -1,0 +1,74 @@
+@model ShoppingCart
+
+@{
+    ViewData["Title"] = "Giỏ hàng";
+}
+
+@* Bài 5 - 5.2.1: Giao diện hiển thị giỏ hàng lấy dữ liệu từ Session. *@
+<div class="container py-5">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <h2 class="fw-bold text-dark mb-0">
+            <i class="fa-solid fa-cart-shopping text-accent me-2"></i>Giỏ hàng của bạn
+        </h2>
+        <a asp-controller="Product" asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">
+            Tiếp tục mua sắm
+        </a>
+    </div>
+
+    @if (!Model.Items.Any())
+    {
+        <div class="alert alert-info shadow-sm">
+            Giỏ hàng đang trống. Hãy chọn món yêu thích để bắt đầu đặt hàng.
+        </div>
+    }
+    else
+    {
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Sản phẩm</th>
+                                <th class="text-center">Số lượng</th>
+                                <th class="text-end">Giá</th>
+                                <th class="text-end">Tổng</th>
+                                <th class="text-end">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Items)
+                            {
+                                <tr>
+                                    <td class="fw-semibold">@item.Name</td>
+                                    <td class="text-center">@item.Quantity</td>
+                                    <td class="text-end">@item.Price.ToString("N0")đ</td>
+                                    <td class="text-end fw-bold text-danger">@((item.Price * item.Quantity).ToString("N0"))đ</td>
+                                    <td class="text-end">
+                                        <a asp-action="RemoveFromCart"
+                                           asp-route-productId="@item.ProductId"
+                                           class="btn btn-sm btn-outline-danger rounded-pill px-3">
+                                            Xóa
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="d-flex justify-content-end align-items-center gap-4 border-top pt-4 mt-4">
+                    <div class="fs-5">
+                        Tổng cộng:
+                        <span class="fw-bold text-danger">
+                            @Model.Items.Sum(item => item.Price * item.Quantity).ToString("N0")đ
+                        </span>
+                    </div>
+                    <a asp-action="Checkout" class="btn btn-success rounded-pill px-4">
+                        Tới trang thanh toán
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
