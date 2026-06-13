@@ -18,49 +18,51 @@
         <nav class="navbar navbar-expand-lg navbar-dark sticky-top px-3">
             <div class="container-fluid">
                 <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Product" asp-action="Index">
-                    <img src="~/images/logo_fastfood.png" alt="Yummy Bite Logo" height="45" class="me-2 rounded-circle">
-                    <span class="fw-bold text-white">Yummy Bite</span>
+                    <img src="~/images/logo_fastfood.png" alt="Yummy Bite Logo" height="42" class="me-2 rounded-circle border border-2 border-warning shadow-sm">
+                    <span>Yummy Bite</span>
                 </a>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="navbar-collapse collapse d-lg-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav flex-grow-1 ms-lg-3">
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Product" asp-action="Index">
+                            <a class="nav-link text-white-50" asp-area="" asp-controller="Product" asp-action="Index">
                                 <i class="fa-solid fa-house me-1"></i> Trang chủ
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Product" asp-action="Add">
+                            <a class="nav-link text-white-50" asp-area="" asp-controller="Product" asp-action="Add">
                                 <i class="fa-solid fa-plus me-1"></i> Thêm món
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Product" asp-action="List">
+                            <a class="nav-link text-white-50" asp-area="" asp-controller="Product" asp-action="List">
                                 <i class="fa-solid fa-table me-1"></i> Quản lý món
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Categories" asp-action="Index">
+                            <a class="nav-link text-white-50" asp-area="" asp-controller="Categories" asp-action="Index">
                                 <i class="fa-solid fa-list me-1"></i> Danh mục
                             </a>
                         </li>
                     </ul>
 
-                    <div class="d-flex align-items-center gap-3">
-                        <form class="d-flex m-0" asp-controller="Product" asp-action="Index" method="get">
-                            <input class="form-control me-2 bg-light-subtle" type="search" name="keyword" placeholder="Thèm món gì nè...">
-                            <button class="btn btn-accent" type="submit">Tìm</button>
+                    <div class="d-flex align-items-center flex-column flex-lg-row gap-3 mt-3 mt-lg-0">
+                        <form class="d-flex m-0 position-relative" asp-controller="Product" asp-action="Index" method="get">
+                            <input class="form-control rounded-pill pe-5 bg-white border-0" style="min-width: 240px; height: 40px; font-size: 0.9rem;" type="search" name="keyword" placeholder="Thèm món gì nè..." value="@Context.Request.Query["keyword"]">
+                            <button class="btn btn-accent rounded-pill position-absolute end-0 top-0 h-100 px-3 border-0 d-flex align-items-center justify-content-center" type="submit" style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important; background-color: var(--accent-color);">
+                                <i class="fa-solid fa-magnifying-glass text-white"></i>
+                            </button>
                         </form>
 
-                        <a asp-area="" asp-controller="Home" asp-action="Cart" class="btn btn-outline-light rounded-pill position-relative px-3 py-2">
-                            <i class="fa-solid fa-cart-shopping me-1"></i>
-                            <span class="d-none d-sm-inline">Giỏ hàng</span>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow">2</span>
+                        <a asp-area="" asp-controller="Home" asp-action="Cart" class="btn btn-outline-warning rounded-pill position-relative px-3 py-2 d-flex align-items-center gap-1 border-2" style="font-weight: 600; font-size: 0.9rem; color: var(--secondary-color); border-color: rgba(255, 183, 3, 0.4);">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <span>Giỏ hàng</span>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow-sm border border-2 border-dark" style="font-size: 0.75rem; padding: 0.35em 0.6em;">2</span>
                         </a>
 
                         <partial name="_LoginPartial" />
@@ -70,39 +72,53 @@
         </nav>
     </header>
 
-    <main role="main" class="pb-3">
+    <main role="main" class="pb-5">
         @RenderBody()
     </main>
 
-    <footer class="bg-dark text-white-50 py-5 mt-5">
+    <footer class="bg-dark text-white-50 py-5 mt-auto border-top border-secondary" style="background-color: #1e1713 !important;">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-6 mb-4 mb-md-0 text-center text-md-start">
-                    <h5 class="text-white fw-bold d-flex align-items-center justify-content-center justify-content-md-start">
-                        <img src="~/images/logo_fastfood.png" alt="Logo" height="40" class="me-2 rounded-circle">
+            <div class="row g-4">
+                <div class="col-lg-5 col-md-6">
+                    <h5 class="text-white fw-bold d-flex align-items-center mb-3">
+                        <img src="~/images/logo_fastfood.png" alt="Logo" height="36" class="me-2 rounded-circle border border-2 border-warning">
                         Yummy Bite
                     </h5>
-                    <p class="small text-white-50 mt-2 mb-3">
-                        Hệ thống cửa hàng thức ăn nhanh cao cấp sử dụng nguyên liệu sạch, tươi ngon mỗi ngày. Bài tập thực hành Lập trình Web.
+                    <p class="small text-white-50 lh-lg">
+                        Hệ thống cửa hàng thức ăn nhanh cao cấp sử dụng nguyên liệu sạch, tươi ngon mỗi ngày. Bài tập thực hành Lập trình Web chất lượng cao.
                     </p>
-                    <div class="d-flex justify-content-center justify-content-md-start gap-3">
-                        <a href="#" class="text-white-50"><i class="fab fa-facebook-f fs-5"></i></a>
-                        <a href="#" class="text-white-50"><i class="fab fa-instagram fs-5"></i></a>
-                        <a href="#" class="text-white-50"><i class="fab fa-youtube fs-5"></i></a>
+                    <div class="d-flex gap-3 mt-3">
+                        <a href="#" class="text-white-50 hover-text-warning"><i class="fab fa-facebook-f fs-5"></i></a>
+                        <a href="#" class="text-white-50 hover-text-warning"><i class="fab fa-instagram fs-5"></i></a>
+                        <a href="#" class="text-white-50 hover-text-warning"><i class="fab fa-youtube fs-5"></i></a>
                     </div>
                 </div>
-                <div class="col-md-6 text-center text-md-end">
-                    <div class="d-flex justify-content-center justify-content-md-end gap-3 mb-0">
-                        <a href="#" class="text-white-50 text-decoration-none small">Giới thiệu</a>
-                        <a href="#" class="text-white-50 text-decoration-none small">Dịch vụ</a>
-                        <a href="#" class="text-white-50 text-decoration-none small">Liên hệ</a>
-                        <a href="#" class="text-white-50 text-decoration-none small">Điều khoản</a>
-                    </div>
+                <div class="col-lg-3 col-md-6 ms-lg-auto">
+                    <h6 class="text-white fw-bold mb-3">Liên kết nhanh</h6>
+                    <ul class="list-unstyled d-flex flex-column gap-2 mb-0">
+                        <li><a asp-controller="Product" asp-action="Index" class="text-white-50 text-decoration-none small hover-text-warning">Cửa hàng</a></li>
+                        <li><a asp-controller="Product" asp-action="List" class="text-white-50 text-decoration-none small hover-text-warning">Quản lý món ăn</a></li>
+                        <li><a asp-controller="Categories" asp-action="Index" class="text-white-50 text-decoration-none small hover-text-warning">Quản lý danh mục</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-12">
+                    <h6 class="text-white fw-bold mb-3">Chính sách & Hỗ trợ</h6>
+                    <ul class="list-unstyled d-flex flex-column gap-2 mb-0">
+                        <li><a href="#" class="text-white-50 text-decoration-none small hover-text-warning">Điều khoản sử dụng</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none small hover-text-warning">Chính sách bảo mật</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none small hover-text-warning">Chính sách vận chuyển</a></li>
+                    </ul>
                 </div>
             </div>
-            <hr class="border-secondary my-4">
-            <div class="text-center small text-white-50">
-                &copy; 2026 Nguyễn Hải Đăng. Thiết kế bởi học viên phục vụ mục đích học tập.
+            <hr class="border-secondary my-4 opacity-25">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center small text-white-50">
+                <div>
+                    &copy; 2026 Nguyễn Hải Đăng. Thiết kế học tập.
+                </div>
+                <div class="mt-2 mt-md-0">
+                    <span class="me-3"><i class="fa-solid fa-phone me-1 text-warning"></i> 1900 xxxx</span>
+                    <span><i class="fa-solid fa-envelope me-1 text-warning"></i> contact@yummybite.com</span>
+                </div>
             </div>
         </div>
     </footer>

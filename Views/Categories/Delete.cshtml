@@ -1,33 +1,59 @@
 @model Category
 
 @{
-    ViewData["Title"] = "Delete Category";
+    ViewData["Title"] = "Xóa danh mục";
 }
 
-<h2 class="mb-4">Delete Category</h2>
-
-<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-
-<div class="alert alert-warning">
-    Are you sure you want to delete <strong>@Model.Name</strong>?
-</div>
-
-@if (Model.Products.Count > 0)
-{
-    <div class="alert alert-danger">
-        This category contains @Model.Products.Count product(s) and cannot be deleted.
+<div class="container py-4" style="max-width: 600px;">
+    <div class="d-flex align-items-center justify-content-between mb-4 pb-2 border-bottom border-light">
+        <div>
+            <h2 class="mb-1 fw-bold text-dark">Xác nhận xóa danh mục</h2>
+            <p class="text-muted mb-0">Hành động này không thể hoàn tác sau khi xác nhận.</p>
+        </div>
+        <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4 py-2">
+            Quay lại
+        </a>
     </div>
-}
 
-<form asp-action="DeleteConfirmed" method="post">
-    <input type="hidden" asp-for="Id" />
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+    <!-- Condition 1: Has nested products (cannot delete) -->
     @if (Model.Products.Count > 0)
     {
-        <button type="button" class="btn btn-danger" disabled>Delete</button>
+        <div class="alert alert-danger d-flex align-items-start gap-3 rounded-4 mb-4 shadow-sm" role="alert" style="background-color: #fdf3f2; border-left: 5px solid #ff4722; color: #b71c1c;">
+            <i class="fa-solid fa-circle-exclamation fs-3 mt-1"></i>
+            <div>
+                <h6 class="fw-bold mb-1">Không thể xóa danh mục này!</h6>
+                Danh mục <strong>@Model.Name</strong> hiện đang chứa <strong>@Model.Products.Count</strong> món ăn. Bạn cần xóa các món ăn này hoặc chuyển chúng sang danh mục khác trước khi xóa danh mục này.
+            </div>
+        </div>
     }
     else
     {
-        <button type="submit" class="btn btn-danger">Delete</button>
+        <!-- Condition 2: Empty (can delete) -->
+        <div class="alert alert-warning d-flex align-items-center gap-3 rounded-4 mb-4 shadow-sm" role="alert" style="background-color: #fff9e6; border-left: 5px solid var(--secondary-color); color: #8a6d1c;">
+            <i class="fa-solid fa-triangle-exclamation fs-3"></i>
+            <div>
+                Bạn có chắc chắn muốn xóa danh mục rỗng <strong>@Model.Name</strong> ra khỏi hệ thống?
+            </div>
+        </div>
     }
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-</form>
+
+    <!-- Action Forms -->
+    <form asp-action="DeleteConfirmed" method="post" class="d-flex gap-2">
+        <input type="hidden" asp-for="Id" />
+        @if (Model.Products.Count > 0)
+        {
+            <button type="button" class="btn btn-danger btn-lg rounded-pill px-4 py-2.5 fw-bold flex-grow-1" disabled style="opacity: 0.5;">
+                <i class="fa-regular fa-trash-can me-1"></i> Không thể xóa
+            </button>
+        }
+        else
+        {
+            <button type="submit" class="btn btn-danger btn-lg rounded-pill px-4 py-2.5 fw-bold flex-grow-1" style="background-color: var(--accent-color); border-color: var(--accent-color);">
+                <i class="fa-regular fa-trash-can me-1"></i> Đồng ý xóa danh mục
+            </button>
+        }
+        <a asp-action="Index" class="btn btn-outline-secondary btn-lg rounded-pill px-4 py-2.5">Hủy bỏ</a>
+    </form>
+</div>

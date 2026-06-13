@@ -1,44 +1,66 @@
 @model Category
 
 @{
-    ViewData["Title"] = "Category Details";
+    ViewData["Title"] = $"Danh mục {Model.Name}";
 }
 
-<div class="d-flex align-items-center justify-content-between mb-4">
-    <div>
-        <h2 class="mb-1">@Model.Name</h2>
-        <p class="text-muted mb-0">Products in this category.</p>
+<div class="container py-4">
+    <div class="d-flex align-items-center justify-content-between mb-4 pb-2 border-bottom border-light">
+        <div>
+            <h2 class="mb-1 fw-bold text-dark">
+                <i class="fa-solid fa-folder-open text-warning me-2"></i>@Model.Name
+            </h2>
+            <p class="text-muted mb-0">Danh sách các món ăn thuộc danh mục này.</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-outline-primary rounded-pill px-4">
+                <i class="fa-regular fa-pen-to-square me-1"></i>Sửa danh mục
+            </a>
+            <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">
+                Danh sách danh mục
+            </a>
+        </div>
     </div>
-    <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-primary">Edit Category</a>
-</div>
 
-@if (Model.Products.Count > 0)
-{
-    <table class="table table-bordered table-hover align-middle">
-        <thead class="table-light">
-            <tr>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var product in Model.Products)
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="card-body p-4 bg-white">
+            @if (Model.Products.Count > 0)
             {
-                <tr>
-                    <td>@product.Name</td>
-                    <td>@product.Price.ToString("N0")</td>
-                    <td>
-                        <a asp-controller="Product" asp-action="Display" asp-route-id="@product.Id">View Product</a>
-                    </td>
-                </tr>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle w-100">
+                        <thead>
+                            <tr>
+                                <th>Tên món ăn</th>
+                                <th>Giá bán</th>
+                                <th class="text-center" style="width: 180px;">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var product in Model.Products)
+                            {
+                                <tr>
+                                    <td class="fw-bold text-dark">@product.Name</td>
+                                    <td class="fw-bold text-danger">@product.Price.ToString("N0")đ</td>
+                                    <td>
+                                        <div class="d-flex justify-content-center">
+                                            <a asp-controller="Product" asp-action="Display" asp-route-id="@product.Id" class="btn btn-sm btn-outline-accent rounded-pill px-3 py-1.5 d-flex align-items-center gap-1" style="font-size: 0.8rem;">
+                                                <i class="fa-regular fa-eye"></i> Chi tiết món
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             }
-        </tbody>
-    </table>
-}
-else
-{
-    <div class="alert alert-info">This category does not contain any products.</div>
-}
-
-<a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            else
+            {
+                <div class="alert alert-info py-4 text-center rounded-4 m-0">
+                    <i class="fa-solid fa-circle-info fs-3 mb-2 text-primary"></i>
+                    <div>Hiện tại chưa có món ăn nào được gán vào danh mục này.</div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

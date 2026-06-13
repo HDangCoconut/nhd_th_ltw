@@ -1,36 +1,53 @@
 @model Product
 
 @{
-    ViewData["Title"] = "Admin - Product Details";
+    ViewData["Title"] = "Admin - Chi tiết sản phẩm";
 }
 
 <div class="container py-4">
-    <a asp-action="Index" class="btn btn-outline-secondary mb-4">
-        <i class="fa-solid fa-arrow-left me-1"></i> Quay lại quản lý sản phẩm
-    </a>
+    <div class="d-flex align-items-center justify-content-between mb-4 pb-2 border-bottom border-light">
+        <div>
+            <h2 class="mb-1 fw-bold text-dark">Chi tiết món ăn (Admin)</h2>
+            <p class="text-muted mb-0">Xem trước hiển thị thông tin món ăn trên hệ thống.</p>
+        </div>
+        <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">
+            <i class="fa-solid fa-arrow-left me-1"></i> Quay lại quản lý
+        </a>
+    </div>
 
-    <div class="card border-0 shadow-sm rounded-4 product-detail-card">
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
         <div class="row g-0">
-            <div class="col-md-5 product-detail-image-wrapper d-flex align-items-center justify-content-center p-4">
+            <div class="col-md-5 d-flex align-items-center justify-content-center p-4 bg-light" style="min-height: 300px;">
                 @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
                 {
-                    <img src="@Model.ImageUrl" alt="@Model.Name" class="product-detail-image" />
+                    <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid rounded-4 shadow-sm border p-1" style="max-height: 280px; object-fit: contain;" />
                 }
                 else
                 {
-                    <div class="product-detail-image product-image-placeholder rounded-3">No image</div>
+                    <div class="rounded-4 border bg-white d-flex align-items-center justify-content-center mx-auto" style="width: 180px; height: 180px; color: var(--text-muted);">No image</div>
                 }
             </div>
             <div class="col-md-7">
-                <div class="card-body p-4">
-                    <h2 class="fw-bold">@Model.Name</h2>
-                    <p class="badge bg-secondary px-3 py-2">SP@Model.Id.ToString("D4")</p>
-                    <div class="h3 text-danger fw-bold my-3">@Model.Price.ToString("N0")đ</div>
-                    <p class="text-muted">@Model.Description</p>
-                    <p><strong>Danh mục:</strong> @Model.Category?.Name</p>
-                    <div class="d-flex gap-2 mt-4">
-                        <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">Delete</a>
+                <div class="card-body p-4 d-flex flex-column h-100 justify-content-between">
+                    <div>
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                            <span class="badge bg-warning-subtle text-warning-emphasis px-2.5 py-1.5" style="font-size: 0.8rem;">
+                                <i class="fa-solid fa-tags me-1"></i>@(Model.Category?.Name ?? "Fastfood")
+                            </span>
+                            <span class="badge bg-secondary px-3 py-1.5" style="font-size: 0.8rem; background-color: rgba(62, 49, 40, 0.06) !important; color: var(--text-dark) !important;">Mã món: FOOD-@Model.Id.ToString("D2")</span>
+                        </div>
+                        <h2 class="fw-bold text-dark mb-2">@Model.Name</h2>
+                        <div class="h3 text-danger fw-bold my-3">@Model.Price.ToString("N0")đ</div>
+                        <p class="text-muted" style="line-height: 1.6;">@Model.Description</p>
+                    </div>
+
+                    <div class="d-flex gap-2 mt-4 pt-3 border-top">
+                        <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-accent rounded-pill px-4 py-2fw-bold flex-grow-1" style="background-color: var(--accent-color); border-color: var(--accent-color);">
+                            <i class="fa-regular fa-pen-to-square me-1"></i> Chỉnh sửa thông tin
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger rounded-pill px-4 py-2">
+                            <i class="fa-regular fa-trash-can me-1"></i> Xóa sản phẩm
+                        </a>
                     </div>
                 </div>
             </div>

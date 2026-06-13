@@ -1,19 +1,21 @@
 @{
-    ViewData["Title"] = "Admin - Orders";
+    ViewData["Title"] = "Quản lý đơn hàng";
 }
 
-<div class="container-fluid px-lg-5 mt-4">
-    <div class="d-flex align-items-center justify-content-between mb-4">
+<div class="container-fluid px-lg-5 mt-4" style="max-width: 900px;">
+    <div class="d-flex align-items-center justify-content-between mb-4 pb-2 border-bottom border-light">
         <div>
-            <h2 class="mb-1">Quản lý đơn hàng</h2>
-            <p class="text-muted mb-0">Phần này đã tạo route và view Admin. Dữ liệu đơn hàng sẽ hoàn thiện ở bài giỏ hàng/đặt hàng.</p>
+            <h2 class="mb-1 fw-bold text-dark">Quản lý đơn hàng</h2>
+            <p class="text-muted mb-0">Tính năng đang trong giai đoạn phát triển.</p>
         </div>
         <a asp-area="Admin" asp-controller="Admin" asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">
             Về Dashboard
         </a>
     </div>
 
-    <div class="alert alert-info">
-        Chưa có model Order trong project hiện tại. Khi sang phần giỏ hàng và đặt hàng, trang này sẽ dùng để quản lý đơn hàng.
+    <div class="alert alert-info py-4 text-center rounded-4 shadow-sm">
+        <i class="fa-solid fa-hourglass-half fs-3 mb-2 text-primary"></i>
+        <div class="fw-bold mb-1">Chưa có dữ liệu đơn hàng</div>
+        <div class="small text-muted">Mô hình dữ liệu Order sẽ được bổ sung ở bài thực hành sau. Giao diện quản lý đơn hàng sẽ tự động cập nhật ngay khi cấu trúc cơ sở dữ liệu sẵn sàng.</div>
     </div>
 </div>

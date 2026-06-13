@@ -3,46 +3,54 @@
 }
 
 <div class="container-fluid px-lg-5 mt-4">
-    <div class="d-flex align-items-center justify-content-between mb-4">
+    <div class="d-flex align-items-center justify-content-between mb-4 pb-2 border-bottom border-light">
         <div>
-            <h2 class="mb-1">Admin Dashboard</h2>
-            <p class="text-muted mb-0">Khu vực quản trị chỉ dành cho tài khoản có quyền Admin.</p>
+            <h2 class="mb-1 fw-bold text-dark">Bảng quản trị (Admin Dashboard)</h2>
+            <p class="text-muted mb-0">Quản trị viên quản lý danh mục, món ăn và đơn đặt hàng của hệ thống.</p>
         </div>
-        <a asp-area="" asp-controller="Product" asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">
-            <i class="fa-solid fa-store me-1"></i> Về trang bán hàng
+        <a asp-area="" asp-controller="Product" asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4 d-flex align-items-center gap-1">
+            <i class="fa-solid fa-store"></i> Xem trang bán hàng
         </a>
     </div>
 
     <div class="row g-4">
+        <!-- Card 1: Products -->
         <div class="col-md-4">
-            <div class="card border-0 shadow-sm rounded-4">
-                <div class="card-body p-4">
-                    <div class="text-muted small mb-2">Sản phẩm</div>
-                    <div class="display-6 fw-bold text-danger">@ViewBag.ProductCount</div>
-                    <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="btn btn-sm btn-danger mt-3">
-                        Quản lý sản phẩm
+            <div class="card stat-card border-0 shadow-sm rounded-4 overflow-hidden h-100">
+                <div class="card-body p-4 bg-white position-relative">
+                    <div class="text-muted small mb-2 fw-semibold uppercase" style="letter-spacing: 0.5px;">Tổng số món ăn</div>
+                    <div class="display-5 fw-bold text-danger my-2">@ViewBag.ProductCount</div>
+                    <div class="small text-muted mb-4"><i class="fa-solid fa-circle-check text-success me-1"></i>Đang hiển thị trên menu</div>
+                    <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="btn btn-danger rounded-pill px-3 py-2 w-100 fw-bold d-flex align-items-center justify-content-center gap-1" style="background-color: var(--accent-color); border-color: var(--accent-color);">
+                        Quản lý sản phẩm <i class="fa-solid fa-arrow-right fs-6"></i>
                     </a>
                 </div>
             </div>
         </div>
+
+        <!-- Card 2: Categories -->
         <div class="col-md-4">
-            <div class="card border-0 shadow-sm rounded-4">
-                <div class="card-body p-4">
-                    <div class="text-muted small mb-2">Danh mục</div>
-                    <div class="display-6 fw-bold text-primary">@ViewBag.CategoryCount</div>
-                    <a asp-area="" asp-controller="Categories" asp-action="Index" class="btn btn-sm btn-outline-primary mt-3">
-                        Quản lý danh mục
+            <div class="card stat-card border-0 shadow-sm rounded-4 overflow-hidden h-100">
+                <div class="card-body p-4 bg-white position-relative">
+                    <div class="text-muted small mb-2 fw-semibold uppercase" style="letter-spacing: 0.5px;">Danh mục món ăn</div>
+                    <div class="display-5 fw-bold text-primary my-2">@ViewBag.CategoryCount</div>
+                    <div class="small text-muted mb-4"><i class="fa-solid fa-circle-check text-success me-1"></i>Phân loại sản phẩm</div>
+                    <a asp-area="" asp-controller="Categories" asp-action="Index" class="btn btn-outline-primary rounded-pill px-3 py-2 w-100 fw-bold d-flex align-items-center justify-content-center gap-1">
+                        Quản lý danh mục <i class="fa-solid fa-arrow-right fs-6"></i>
                     </a>
                 </div>
             </div>
         </div>
+
+        <!-- Card 3: Orders -->
         <div class="col-md-4">
-            <div class="card border-0 shadow-sm rounded-4">
-                <div class="card-body p-4">
-                    <div class="text-muted small mb-2">Đơn hàng</div>
-                    <div class="display-6 fw-bold text-success">0</div>
-                    <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="btn btn-sm btn-outline-success mt-3">
-                        Quản lý đơn hàng
+            <div class="card stat-card border-0 shadow-sm rounded-4 overflow-hidden h-100">
+                <div class="card-body p-4 bg-white position-relative">
+                    <div class="text-muted small mb-2 fw-semibold uppercase" style="letter-spacing: 0.5px;">Đơn đặt hàng mới</div>
+                    <div class="display-5 fw-bold text-success my-2">0</div>
+                    <div class="small text-muted mb-4"><i class="fa-solid fa-clock text-warning me-1"></i>Chờ xử lý / Vận chuyển</div>
+                    <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="btn btn-outline-success rounded-pill px-3 py-2 w-100 fw-bold d-flex align-items-center justify-content-center gap-1">
+                        Quản lý đơn hàng <i class="fa-solid fa-arrow-right fs-6"></i>
                     </a>
                 </div>
             </div>
