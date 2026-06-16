@@ -1,19 +1,72 @@
+@model IEnumerable<Order>
+
 @{
-    ViewData["Title"] = "Admin - Orders";
+    ViewData["Title"] = "Admin - Đơn hàng";
 }
 
 <div class="container-fluid px-lg-5 mt-4">
     <div class="d-flex align-items-center justify-content-between mb-4">
         <div>
-            <h2 class="mb-1">Quản lý đơn hàng</h2>
-            <p class="text-muted mb-0">Phần này đã tạo route và view Admin. Dữ liệu đơn hàng sẽ hoàn thiện ở bài giỏ hàng/đặt hàng.</p>
+            <h2 class="mb-1">Lịch sử đơn hàng</h2>
+            <p class="text-muted mb-0">Danh sách sản phẩm đã được mua bởi người dùng.</p>
         </div>
         <a asp-area="Admin" asp-controller="Admin" asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">
             Về Dashboard
         </a>
     </div>
 
-    <div class="alert alert-info">
-        Chưa có model Order trong project hiện tại. Khi sang phần giỏ hàng và đặt hàng, trang này sẽ dùng để quản lý đơn hàng.
-    </div>
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">Chưa có đơn hàng nào từ người dùng.</div>
+    }
+    else
+    {
+        @foreach (var order in Model)
+        {
+            <div class="card border-0 shadow-sm rounded-4 mb-3">
+                <div class="card-body">
+                    <div class="d-flex flex-wrap justify-content-between gap-2 mb-3">
+                        <div>
+                            <h5 class="mb-1">Đơn hàng #@order.Id</h5>
+                            <div class="text-muted small">@order.OrderDate.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</div>
+                            <div class="small mt-1">
+                                <i class="fa-solid fa-user me-1"></i>
+                                @(order.ApplicationUser?.FullName ?? "Không rõ")
+                                <span class="text-muted">(@(order.ApplicationUser?.Email ?? order.UserId))</span>
+                            </div>
+                            @if (!string.IsNullOrWhiteSpace(order.ShippingAddress))
+                            {
+                                <div class="small text-muted mt-1">
+                                    <i class="fa-solid fa-location-dot me-1"></i> @order.ShippingAddress
+                                </div>
+                            }
+                        </div>
+                        <div class="fw-bold text-danger">@order.TotalPrice.ToString("N0")đ</div>
+                    </div>
+
+                    <table class="table table-sm align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Đơn giá</th>
+                                <th>Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in order.OrderDetails)
+                            {
+                                <tr>
+                                    <td>@(item.Product?.Name ?? $"SP #{item.ProductId}")</td>
+                                    <td>@item.Quantity</td>
+                                    <td>@item.Price.ToString("N0")đ</td>
+                                    <td>@((item.Price * item.Quantity).ToString("N0"))đ</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+    }
 </div>

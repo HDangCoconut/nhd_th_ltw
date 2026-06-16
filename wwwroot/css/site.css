@@ -132,6 +132,12 @@ body {
   -webkit-line-clamp: 2;
 }
 
+.product-desc * {
+  display: inline !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
 .product-price {
   font-size: 1.15rem;
 }

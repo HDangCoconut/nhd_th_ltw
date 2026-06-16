@@ -12,13 +12,15 @@ namespace NguyenHaiDang_W345.Areas.Admin.Controllers;
 public class AdminController(
     IProductRepository productRepository,
     ICategoryRepository categoryRepository,
-    UserManager<ApplicationUser> userManager) : Controller
+    UserManager<ApplicationUser> userManager,
+    ApplicationDbContext context) : Controller
 {
     public async Task<IActionResult> Index()
     {
         ViewBag.ProductCount = (await productRepository.GetAllAsync()).Count();
         ViewBag.CategoryCount = (await categoryRepository.GetAllAsync()).Count();
         ViewBag.UserCount = await userManager.Users.CountAsync();
+        ViewBag.OrderCount = await context.Orders.CountAsync();
         return View();
     }
 }

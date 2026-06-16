@@ -8,6 +8,13 @@
     var pageSize = Convert.ToInt32(ViewBag.PageSize ?? 10);
     var firstItem = totalItems == 0 ? 0 : ((currentPage - 1) * pageSize) + 1;
     var lastItem = Math.Min(currentPage * pageSize, totalItems);
+
+    string StripHtml(string? input)
+    {
+        if (string.IsNullOrEmpty(input)) return "";
+        var stripped = System.Text.RegularExpressions.Regex.Replace(input, "<.*?>", string.Empty);
+        return System.Net.WebUtility.HtmlDecode(stripped);
+    }
 }
 
 <div class="container-fluid px-lg-5 mt-4">
@@ -58,7 +65,7 @@
                                 <td class="fw-semibold">@product.Name</td>
                                 <td data-order="@product.Price">@product.Price.ToString("N0")đ</td>
                                 <td>@product.Category?.Name</td>
-                                <td class="product-description">@product.Description</td>
+                                <td class="product-description">@StripHtml(product.Description)</td>
                                 <td class="text-nowrap">
                                     <a asp-action="Display" asp-route-id="@product.Id" class="btn btn-sm btn-outline-accent">Xem</a>
                                     <a asp-action="Update" asp-route-id="@product.Id" class="btn btn-sm btn-outline-primary">Sửa</a>
