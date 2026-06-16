@@ -14,7 +14,7 @@
     </div>
 
     <div class="row g-4">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card border-0 shadow-sm rounded-4">
                 <div class="card-body p-4">
                     <div class="text-muted small mb-2">Sản phẩm</div>
@@ -25,7 +25,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card border-0 shadow-sm rounded-4">
                 <div class="card-body p-4">
                     <div class="text-muted small mb-2">Danh mục</div>
@@ -36,7 +36,18 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <div class="text-muted small mb-2">Tài khoản</div>
+                    <div class="display-6 fw-bold text-warning">@ViewBag.UserCount</div>
+                    <a asp-area="Admin" asp-controller="User" asp-action="Index" class="btn btn-sm btn-outline-warning mt-3">
+                        Quản lý tài khoản
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
             <div class="card border-0 shadow-sm rounded-4">
                 <div class="card-body p-4">
                     <div class="text-muted small mb-2">Đơn hàng</div>

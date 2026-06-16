@@ -1,0 +1,53 @@
+@model IEnumerable<Order>
+
+@{
+    ViewData["Title"] = "Lịch sử mua";
+}
+
+<div class="container py-4">
+    <h2 class="mb-4">Lịch sử mua</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">Bạn chưa có đơn hàng nào.</div>
+    }
+    else
+    {
+        @foreach (var order in Model)
+        {
+            <div class="card border-0 shadow-sm rounded-4 mb-3">
+                <div class="card-body">
+                    <div class="d-flex flex-wrap justify-content-between gap-2 mb-3">
+                        <div>
+                            <h5 class="mb-1">Đơn hàng #@order.Id</h5>
+                            <div class="text-muted small">@order.OrderDate.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</div>
+                        </div>
+                        <div class="fw-bold text-danger">@order.TotalPrice.ToString("N0")đ</div>
+                    </div>
+
+                    <table class="table table-sm align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Đơn giá</th>
+                                <th>Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in order.OrderDetails)
+                            {
+                                <tr>
+                                    <td>@(item.Product?.Name ?? $"SP #{item.ProductId}")</td>
+                                    <td>@item.Quantity</td>
+                                    <td>@item.Price.ToString("N0")đ</td>
+                                    <td>@((item.Price * item.Quantity).ToString("N0"))đ</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+    }
+</div>

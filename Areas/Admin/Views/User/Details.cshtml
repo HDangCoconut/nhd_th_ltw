@@ -1,0 +1,54 @@
+@model AdminUserDetailsViewModel
+
+@{
+    ViewData["Title"] = "Admin - User Details";
+}
+
+<div class="container py-4">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h2 class="mb-1">Chi tiết tài khoản</h2>
+            <p class="text-muted mb-0">@Model.Email</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Sửa</a>
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-4">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">@Model.Email</dd>
+
+                <dt class="col-sm-3">Họ tên</dt>
+                <dd class="col-sm-9">@Model.FullName</dd>
+
+                <dt class="col-sm-3">Tuổi</dt>
+                <dd class="col-sm-9">@Model.Age</dd>
+
+                <dt class="col-sm-3">Số điện thoại</dt>
+                <dd class="col-sm-9">@(string.IsNullOrWhiteSpace(Model.PhoneNumber) ? "Chưa có" : Model.PhoneNumber)</dd>
+
+                <dt class="col-sm-3">Địa chỉ</dt>
+                <dd class="col-sm-9">@(string.IsNullOrWhiteSpace(Model.Address) ? "Chưa có" : Model.Address)</dd>
+
+                <dt class="col-sm-3">Quyền</dt>
+                <dd class="col-sm-9">@Model.Roles</dd>
+
+                <dt class="col-sm-3">Trạng thái</dt>
+                <dd class="col-sm-9">
+                    @if (Model.IsLocked)
+                    {
+                        <span class="badge bg-danger">Đã khóa</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success">Hoạt động</span>
+                    }
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>

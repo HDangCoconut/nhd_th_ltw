@@ -121,19 +121,22 @@
                 </div>
             </div>
 
-            <div class="mb-4">
+            <form asp-controller="ShoppingCart" asp-action="AddToCart" method="get" class="mb-4">
+                <input type="hidden" name="productId" value="@Model.Id" />
                 <label for="quantity" class="form-label fw-bold text-dark">Số lượng:</label>
-                <input type="number" class="form-control text-center rounded-3 border-secondary" id="quantity" value="1" min="1" style="max-width: 80px; font-weight: 600;">
-            </div>
-
-            <div class="d-flex flex-wrap gap-3 mb-4">
-                <a asp-controller="Home" asp-action="Cart" class="btn btn-accent btn-lg flex-grow-1 py-3 px-4 rounded-3 fw-bold shadow-sm">
+                <input type="number" class="form-control text-center rounded-3 border-secondary mb-4" id="quantity" name="quantity" value="1" min="1" style="max-width: 80px; font-weight: 600;">
+                <button type="submit" class="btn btn-accent btn-lg py-3 px-4 rounded-3 fw-bold shadow-sm">
                     <i class="fa-solid fa-cart-plus me-2"></i> Thêm vào giỏ hàng
-                </a>
-                <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-outline-secondary btn-lg py-3 px-4 rounded-3">
-                    <i class="fa-regular fa-heart me-1"></i> Yêu thích
-                </a>
-            </div>
+                </button>
+            </form>
+            @if (User.IsInRole(SD.Role_Admin))
+            {
+                <div class="d-flex flex-wrap gap-3 mb-4">
+                    <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-outline-secondary btn-lg py-3 px-4 rounded-3">
+                        <i class="fa-solid fa-pen-to-square me-1"></i> Sửa món
+                    </a>
+                </div>
+            }
 
             <div class="mt-4 border-top pt-4">
                 <h5 class="fw-bold text-dark mb-3">Đặc trưng món ăn:</h5>

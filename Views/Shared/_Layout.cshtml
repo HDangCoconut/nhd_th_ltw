@@ -1,3 +1,8 @@
+@{
+    var cart = Context.Session.GetObjectFromJson<ShoppingCart>("Cart");
+    var cartCount = cart?.Items.Sum(item => item.Quantity) ?? 0;
+}
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -34,21 +39,24 @@
                                 <i class="fa-solid fa-house me-1"></i> Trang chủ
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Product" asp-action="Add">
-                                <i class="fa-solid fa-plus me-1"></i> Thêm món
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Product" asp-action="List">
-                                <i class="fa-solid fa-table me-1"></i> Quản lý món
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Categories" asp-action="Index">
-                                <i class="fa-solid fa-list me-1"></i> Danh mục
-                            </a>
-                        </li>
+                        @if (User.IsInRole(SD.Role_Admin))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Product" asp-action="Add">
+                                    <i class="fa-solid fa-plus me-1"></i> Thêm món
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Product" asp-action="List">
+                                    <i class="fa-solid fa-table me-1"></i> Quản lý món
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Categories" asp-action="Index">
+                                    <i class="fa-solid fa-list me-1"></i> Danh mục
+                                </a>
+                            </li>
+                        }
                     </ul>
 
                     <div class="d-flex align-items-center gap-3">
@@ -57,10 +65,13 @@
                             <button class="btn btn-accent" type="submit">Tìm</button>
                         </form>
 
-                        <a asp-area="" asp-controller="Home" asp-action="Cart" class="btn btn-outline-light rounded-pill position-relative px-3 py-2">
+                        <a asp-area="" asp-controller="ShoppingCart" asp-action="Index" class="btn btn-outline-light rounded-pill position-relative px-3 py-2">
                             <i class="fa-solid fa-cart-shopping me-1"></i>
                             <span class="d-none d-sm-inline">Giỏ hàng</span>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow">2</span>
+                            @if (cartCount > 0)
+                            {
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow">@cartCount</span>
+                            }
                         </a>
 
                         <partial name="_LoginPartial" />
