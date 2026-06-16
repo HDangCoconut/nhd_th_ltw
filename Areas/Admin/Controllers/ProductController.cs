@@ -32,13 +32,19 @@ public class ProductController(
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Add(Product product, IFormFile? imageUrl)
+    public async Task<IActionResult> Add(Product product, List<IFormFile>? productImages)
     {
-        ValidateImage(imageUrl);
+        ValidateImages(productImages);
         if (!ModelState.IsValid) return await ProductFormViewAsync(product);
 
-        if (imageUrl is not null) product.ImageUrl = await SaveImageAsync(imageUrl);
+        var imageUrls = await SaveImagesAsync(productImages);
+        if (imageUrls.Count > 0) product.ImageUrl = imageUrls[0];
+
         await productRepository.AddAsync(product);
+
+        if (imageUrls.Count > 1)
+            await productRepository.AddProductImagesAsync(product.Id, imageUrls.Skip(1));
+
         return RedirectToAction(nameof(Index));
     }
 
@@ -53,18 +59,65 @@ public class ProductController(
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Update(int id, Product product, IFormFile? imageUrl)
+    public async Task<IActionResult> Update(
+        int id,
+        Product product,
+        List<IFormFile>? productImages,
+        List<int>? removedImageIds,
+        bool removePrimaryImage = false)
     {
         if (id != product.Id) return NotFound();
 
-        ValidateImage(imageUrl);
+        ValidateImages(productImages);
         if (!ModelState.IsValid) return await ProductFormViewAsync(product);
 
         var existingProduct = await productRepository.GetByIdAsync(id);
         if (existingProduct is null) return NotFound();
 
         UpdateProduct(existingProduct, product);
-        if (imageUrl is not null) existingProduct.ImageUrl = await SaveImageAsync(imageUrl);
+
+        if (removedImageIds?.Count > 0)
+        {
+            await productRepository.DeleteProductImagesAsync(removedImageIds);
+            if (existingProduct.Images is not null)
+            {
+                existingProduct.Images = existingProduct.Images
+                    .Where(image => !removedImageIds.Contains(image.Id))
+                    .ToList();
+            }
+        }
+
+        if (removePrimaryImage)
+            existingProduct.ImageUrl = null;
+
+        var newImageUrls = await SaveImagesAsync(productImages);
+        if (newImageUrls.Count > 0)
+        {
+            List<string> additionalUrls;
+            if (string.IsNullOrWhiteSpace(existingProduct.ImageUrl))
+            {
+                existingProduct.ImageUrl = newImageUrls[0];
+                additionalUrls = newImageUrls.Skip(1).ToList();
+            }
+            else
+            {
+                additionalUrls = newImageUrls;
+            }
+
+            if (additionalUrls.Count > 0)
+                await productRepository.AddProductImagesAsync(existingProduct.Id, additionalUrls);
+        }
+
+        if (string.IsNullOrWhiteSpace(existingProduct.ImageUrl))
+        {
+            var refreshedProduct = await productRepository.GetByIdAsync(id);
+            var nextPrimaryImage = refreshedProduct?.Images?.OrderBy(image => image.Id).FirstOrDefault();
+            if (nextPrimaryImage is not null)
+            {
+                existingProduct.ImageUrl = nextPrimaryImage.Url;
+                await productRepository.DeleteProductImagesAsync([nextPrimaryImage.Id]);
+            }
+        }
 
         await productRepository.UpdateAsync(existingProduct);
         return RedirectToAction(nameof(Index));
@@ -104,10 +157,32 @@ public class ProductController(
         return $"/images/{fileName}";
     }
 
-    private void ValidateImage(IFormFile? image)
+    private void ValidateImages(IEnumerable<IFormFile>? images)
     {
-        if (image is not null && !IsValidImage(image))
-            ModelState.AddModelError(nameof(Product.ImageUrl), "Tệp tải lên phải là hình ảnh hợp lệ.");
+        if (images is null) return;
+
+        foreach (var image in images.Where(image => image.Length > 0))
+        {
+            if (!IsValidImage(image))
+            {
+                ModelState.AddModelError(nameof(Product.ImageUrl), "Tệp tải lên phải là hình ảnh hợp lệ.");
+                return;
+            }
+        }
+    }
+
+    private async Task<List<string>> SaveImagesAsync(IEnumerable<IFormFile>? images)
+    {
+        var urls = new List<string>();
+        if (images is null) return urls;
+
+        foreach (var image in images.Where(image => image.Length > 0))
+        {
+            if (IsValidImage(image))
+                urls.Add(await SaveImageAsync(image));
+        }
+
+        return urls;
     }
 
     private static bool IsValidImage(IFormFile image) =>

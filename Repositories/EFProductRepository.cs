@@ -51,4 +51,32 @@ public class EFProductRepository : IProductRepository
         _context.Products.Remove(product);
         await _context.SaveChangesAsync();
     }
+
+    public async Task AddProductImagesAsync(int productId, IEnumerable<string> urls)
+    {
+        var images = urls.Select(url => new ProductImage
+        {
+            ProductId = productId,
+            Url = url
+        });
+
+        await _context.ProductImages.AddRangeAsync(images);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteProductImagesAsync(IEnumerable<int> imageIds)
+    {
+        var ids = imageIds.ToList();
+        if (ids.Count == 0)
+        {
+            return;
+        }
+
+        var images = await _context.ProductImages
+            .Where(image => ids.Contains(image.Id))
+            .ToListAsync();
+
+        _context.ProductImages.RemoveRange(images);
+        await _context.SaveChangesAsync();
+    }
 }

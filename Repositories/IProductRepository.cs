@@ -9,4 +9,6 @@ public interface IProductRepository
     Task AddAsync(Product product);
     Task UpdateAsync(Product product);
     Task DeleteAsync(int id);
+    Task AddProductImagesAsync(int productId, IEnumerable<string> urls);
+    Task DeleteProductImagesAsync(IEnumerable<int> imageIds);
 }

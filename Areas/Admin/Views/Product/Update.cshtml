@@ -2,6 +2,20 @@
 
 @{
     ViewData["Title"] = "Admin - Edit Product";
+    var existingImages = new List<(string Key, string Url, int? ImageId, bool IsPrimary)>();
+
+    if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+    {
+        existingImages.Add(("primary", Model.ImageUrl, null, true));
+    }
+
+    if (Model.Images is not null)
+    {
+        existingImages.AddRange(Model.Images
+            .Where(image => !string.IsNullOrWhiteSpace(image.Url))
+            .Where(image => !string.Equals(image.Url, Model.ImageUrl, StringComparison.OrdinalIgnoreCase))
+            .Select(image => ($"image-{image.Id}", image.Url, (int?)image.Id, false)));
+    }
 }
 
 <div class="container py-4">
@@ -39,10 +53,39 @@
                     <span asp-validation-for="CategoryId" class="text-danger"></span>
                 </div>
 
+                @if (existingImages.Any())
+                {
+                    <div class="mb-3">
+                        <label class="form-label">Ảnh hiện tại</label>
+                        <div class="d-flex flex-wrap gap-3">
+                            @foreach (var image in existingImages)
+                            {
+                                <div class="product-image-preview-item text-center">
+                                    <img src="@image.Url" alt="@Model.Name" class="product-edit-image rounded-3 border" />
+                                    <div class="form-check mt-2">
+                                        @if (image.IsPrimary)
+                                        {
+                                            <input class="form-check-input" type="checkbox" name="removePrimaryImage" value="true" id="removePrimaryImage" />
+                                            <label class="form-check-label small" for="removePrimaryImage">Xóa ảnh đại diện</label>
+                                        }
+                                        else
+                                        {
+                                            <input class="form-check-input" type="checkbox" name="removedImageIds" value="@image.ImageId" id="remove-@image.Key" />
+                                            <label class="form-check-label small" for="remove-@image.Key">Xóa ảnh</label>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+
                 <div class="mb-3">
-                    <label for="imageUrl" class="form-label">Product Image</label>
-                    <input type="file" id="imageUrl" name="imageUrl" class="form-control" accept="image/*" />
+                    <label for="productImages" class="form-label">Thêm ảnh mới</label>
+                    <input type="file" id="productImages" name="productImages" class="form-control" accept="image/*" multiple />
+                    <div class="form-text">Có thể chọn nhiều ảnh cùng lúc.</div>
                     <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                    <div id="imagePreviewList" class="d-flex flex-wrap gap-3 mt-3"></div>
                 </div>
 
                 <div class="d-flex gap-2">
@@ -54,16 +97,21 @@
 
         <div class="col-lg-5">
             <div class="card border-0 shadow-sm rounded-4">
-                <div class="card-header fw-semibold">Product Image Preview</div>
-                <div class="card-body text-center">
-                    <img src="@Model.ImageUrl"
-                         alt="@Model.Name"
-                         class="product-edit-image @(string.IsNullOrWhiteSpace(Model.ImageUrl) ? "d-none" : "")"
-                         id="previewImage" />
-                    <div class="product-edit-image product-image-placeholder @(string.IsNullOrWhiteSpace(Model.ImageUrl) ? "" : "d-none")"
-                         id="imagePlaceholder">
-                        No image
-                    </div>
+                <div class="card-header fw-semibold">Tổng quan ảnh sản phẩm</div>
+                <div class="card-body">
+                    @if (existingImages.Any())
+                    {
+                        <div class="d-flex flex-wrap gap-2">
+                            @foreach (var image in existingImages)
+                            {
+                                <img src="@image.Url" alt="@Model.Name" class="product-edit-image rounded-3 border" />
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="product-edit-image product-image-placeholder">Chưa có ảnh</div>
+                    }
                 </div>
             </div>
         </div>
@@ -73,21 +121,22 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script>
-        document.getElementById("imageUrl").addEventListener("change", function (event) {
-            const file = event.target.files[0];
+        document.getElementById("productImages").addEventListener("change", function (event) {
+            const previewList = document.getElementById("imagePreviewList");
+            previewList.innerHTML = "";
 
-            if (!file) {
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = function (readerEvent) {
-                const previewImage = document.getElementById("previewImage");
-                previewImage.src = readerEvent.target.result;
-                previewImage.classList.remove("d-none");
-                document.getElementById("imagePlaceholder").classList.add("d-none");
-            };
-            reader.readAsDataURL(file);
+            Array.from(event.target.files).forEach(function (file, index) {
+                const reader = new FileReader();
+                reader.onload = function (readerEvent) {
+                    const wrapper = document.createElement("div");
+                    wrapper.className = "product-image-preview-item text-center";
+                    wrapper.innerHTML = `
+                        <img src="${readerEvent.target.result}" alt="Preview ${index + 1}" class="product-edit-image rounded-3 border" />
+                        <div class="small text-muted mt-1">Ảnh mới ${index + 1}</div>`;
+                    previewList.appendChild(wrapper);
+                };
+                reader.readAsDataURL(file);
+            });
         });
     </script>
 }
