@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using NguyenHaiDang_W345.Extensions;
 using NguyenHaiDang_W345.Models;
 using NguyenHaiDang_W345.Repositories;
 
@@ -51,7 +52,10 @@ public class ProductController(
     public async Task<IActionResult> Display(int id)
     {
         var product = await productRepository.GetByIdAsync(id);
-        return product is null ? NotFound() : View(product);
+        if (product is null) return NotFound();
+
+        ViewBag.CartQuantity = HttpContext.GetShoppingCart().GetQuantity(id);
+        return View(product);
     }
 
     [Authorize(Roles = SD.Role_Admin)]

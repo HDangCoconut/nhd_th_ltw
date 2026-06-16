@@ -1,4 +1,6 @@
+using System.Security.Claims;
 using System.Text.Json;
+using NguyenHaiDang_W345.Models;
 
 namespace NguyenHaiDang_W345.Extensions;
 
@@ -15,4 +17,18 @@ public static class SessionExtensions
         var value = session.GetString(key);
         return value is null ? default : JsonSerializer.Deserialize<T>(value);
     }
+
+    public static string GetCartKey(this HttpContext context) =>
+        context.User.Identity?.IsAuthenticated == true
+            ? $"Cart_{context.User.FindFirstValue(ClaimTypes.NameIdentifier)}"
+            : "Cart";
+
+    public static ShoppingCart GetShoppingCart(this HttpContext context) =>
+        context.Session.GetObjectFromJson<ShoppingCart>(context.GetCartKey()) ?? new ShoppingCart();
+
+    public static void SaveShoppingCart(this HttpContext context, ShoppingCart cart) =>
+        context.Session.SetObjectAsJson(context.GetCartKey(), cart);
+
+    public static void ClearShoppingCart(this HttpContext context) =>
+        context.Session.Remove(context.GetCartKey());
 }

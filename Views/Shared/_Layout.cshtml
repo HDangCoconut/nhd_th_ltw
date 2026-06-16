@@ -1,5 +1,5 @@
 @{
-    var cart = Context.Session.GetObjectFromJson<ShoppingCart>("Cart");
+    var cart = Context.GetShoppingCart();
     var cartCount = cart?.Items.Sum(item => item.Quantity) ?? 0;
 }
 

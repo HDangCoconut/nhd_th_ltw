@@ -23,4 +23,22 @@ public class ShoppingCart
     {
         Items.RemoveAll(i => i.ProductId == productId);
     }
+
+    public int GetQuantity(int productId) =>
+        Items.FirstOrDefault(i => i.ProductId == productId)?.Quantity ?? 0;
+
+    public void SetItem(CartItem item, int quantity)
+    {
+        var existing = Items.FirstOrDefault(i => i.ProductId == item.ProductId);
+        if (existing is not null) existing.Quantity = quantity;
+        else { item.Quantity = quantity; Items.Add(item); }
+    }
+
+    public void ChangeQuantity(int productId, int delta)
+    {
+        var item = Items.FirstOrDefault(i => i.ProductId == productId);
+        if (item is null) return;
+        item.Quantity += delta;
+        if (item.Quantity <= 0) RemoveItem(productId);
+    }
 }

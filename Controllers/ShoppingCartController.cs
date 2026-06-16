@@ -13,8 +13,6 @@ public class ShoppingCartController(
     ApplicationDbContext context,
     UserManager<ApplicationUser> userManager) : Controller
 {
-    private const string CartSessionKey = "Cart";
-
     public async Task<IActionResult> AddToCart(int productId, int quantity = 1)
     {
         var product = await productRepository.GetByIdAsync(productId);
@@ -32,6 +30,30 @@ public class ShoppingCartController(
     {
         var cart = GetCart();
         cart.RemoveItem(productId);
+        SaveCart(cart);
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SetCartItem(int productId, int quantity)
+    {
+        if (quantity < 1) quantity = 1;
+        var product = await productRepository.GetByIdAsync(productId);
+        if (product is null) return NotFound();
+
+        var cart = GetCart();
+        cart.SetItem(new CartItem { ProductId = productId, Name = product.Name, Price = product.Price }, quantity);
+        SaveCart(cart);
+        return RedirectToAction("Display", "Product", new { id = productId });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult UpdateQuantity(int productId, int delta)
+    {
+        var cart = GetCart();
+        cart.ChangeQuantity(productId, delta);
         SaveCart(cart);
         return RedirectToAction(nameof(Index));
     }
@@ -76,13 +98,11 @@ public class ShoppingCartController(
 
         context.Orders.Add(order);
         await context.SaveChangesAsync();
-        HttpContext.Session.Remove(CartSessionKey);
+        HttpContext.ClearShoppingCart();
         return View("OrderCompleted", order.Id);
     }
 
-    private ShoppingCart GetCart() =>
-        HttpContext.Session.GetObjectFromJson<ShoppingCart>(CartSessionKey) ?? new ShoppingCart();
+    private ShoppingCart GetCart() => HttpContext.GetShoppingCart();
 
-    private void SaveCart(ShoppingCart cart) =>
-        HttpContext.Session.SetObjectAsJson(CartSessionKey, cart);
+    private void SaveCart(ShoppingCart cart) => HttpContext.SaveShoppingCart(cart);
 }

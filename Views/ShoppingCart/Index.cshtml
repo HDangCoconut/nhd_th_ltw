@@ -41,7 +41,21 @@
                             {
                                 <tr>
                                     <td class="fw-semibold">@item.Name</td>
-                                    <td class="text-center">@item.Quantity</td>
+                                    <td class="text-center">
+                                        <div class="d-inline-flex align-items-center gap-2">
+                                            <form asp-action="UpdateQuantity" method="post" class="d-inline">
+                                                <input type="hidden" name="productId" value="@item.ProductId" />
+                                                <input type="hidden" name="delta" value="-1" />
+                                                <button type="submit" class="btn btn-sm btn-outline-secondary px-2">-</button>
+                                            </form>
+                                            <span class="fw-semibold">@item.Quantity</span>
+                                            <form asp-action="UpdateQuantity" method="post" class="d-inline">
+                                                <input type="hidden" name="productId" value="@item.ProductId" />
+                                                <input type="hidden" name="delta" value="1" />
+                                                <button type="submit" class="btn btn-sm btn-outline-secondary px-2">+</button>
+                                            </form>
+                                        </div>
+                                    </td>
                                     <td class="text-end">@item.Price.ToString("N0")đ</td>
                                     <td class="text-end fw-bold text-danger">@((item.Price * item.Quantity).ToString("N0"))đ</td>
                                     <td class="text-end">

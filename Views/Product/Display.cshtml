@@ -23,6 +23,8 @@
     }
 
     var oldPrice = Model.Price * 1.25m;
+    var cartQty = Convert.ToInt32(ViewBag.CartQuantity ?? 0);
+    var displayQty = cartQty > 0 ? cartQty : 1;
 }
 
 <div class="container py-4">
@@ -121,10 +123,14 @@
                 </div>
             </div>
 
-            <form asp-controller="ShoppingCart" asp-action="AddToCart" method="get" class="mb-4">
+            <form asp-controller="ShoppingCart" asp-action="SetCartItem" method="post" class="mb-4">
                 <input type="hidden" name="productId" value="@Model.Id" />
                 <label for="quantity" class="form-label fw-bold text-dark">Số lượng:</label>
-                <input type="number" class="form-control text-center rounded-3 border-secondary mb-4" id="quantity" name="quantity" value="1" min="1" style="max-width: 80px; font-weight: 600;">
+                <div class="d-flex align-items-center gap-2 mb-4">
+                    <button type="button" class="btn btn-outline-secondary px-3" onclick="changeQty(-1)">-</button>
+                    <input type="number" class="form-control text-center rounded-3 border-secondary" id="quantity" name="quantity" value="@displayQty" min="1" style="max-width: 80px; font-weight: 600;">
+                    <button type="button" class="btn btn-outline-secondary px-3" onclick="changeQty(1)">+</button>
+                </div>
                 <button type="submit" class="btn btn-accent btn-lg py-3 px-4 rounded-3 fw-bold shadow-sm">
                     <i class="fa-solid fa-cart-plus me-2"></i> Thêm vào giỏ hàng
                 </button>
@@ -198,6 +204,11 @@
 
 @section Scripts {
     <script>
+        function changeQty(delta) {
+            const input = document.getElementById("quantity");
+            input.value = Math.max(1, parseInt(input.value || 1, 10) + delta);
+        }
+
         document.querySelectorAll(".product-gallery-main-image-button").forEach(function (button) {
             button.addEventListener("click", function () {
                 const imageIndex = Number(button.dataset.imageIndex);
